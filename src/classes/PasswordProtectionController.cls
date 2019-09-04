@@ -13,7 +13,7 @@
 **/
 
 
-public Class PasswordProtectionController{
+public class PasswordProtectionController{
     
     
     public static void createContentDeliveryFile(String fileBody, String recordId){
