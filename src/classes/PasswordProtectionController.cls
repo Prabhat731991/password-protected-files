@@ -35,16 +35,19 @@ public class PasswordProtectionController{
         //Create Content Distribution to make the file publicly available as well as password protected
         ContentDistribution cdistObj = new ContentDistribution();
         cdistObj.name = contentObj.Title;
-        cdistObj.ContentVersionId = content.Id; //Id of the content version record
+        cdistObj.ContentVersionId = contentObj.Id; //Id of the content version record
         cdistObj.PreferencesAllowPDFDownload = true; //Allow to download the file as PDF
         cdistObj.PreferencesAllowViewInBrowser = true; // Allow to view the file in browser
         cdistObj.ExpiryDate = Datetime.now().addMinutes(120); // set an expiry date/time for the file (2 hours from current time in this case)
         cdistObj.PreferencesExpires = true; //If setting the expiry date, setting this field to true is required
+        cdistObj.PreferencesPasswordRequired = true; // this defines a random password
+
         insert cdistObj;
 
         //Fetch the Public URL and Password to store in some into the parent record and use it for further processing
         List<ContentDistribution> cdistObjList = [SELECT DistributionPublicUrl,Password,ExpiryDate FROM ContentDistribution WHERE Id=:cdistObj.Id];
-
+        
+        //System.debug(cdistObjList.Password); //uncomment this line to see the magic
         //Further processing .........
         //The above list will have all the details which can be used to store on any object and can be sent out to external users.
     }
